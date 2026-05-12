@@ -29,12 +29,14 @@ class ParceirosAdmin(admin.ModelAdmin):
 
     def logo_preview(self, obj):
         if obj.logo:
-            return format_html(f'<img src="{obj.logo.url}" style="max-height: 50px;" />')
+            return format_html('<img src="{}" style="max-height: 50px;" />', obj.logo.url)
         return "—"
     logo_preview.short_description = "Logo"
 
 @admin.register(Depoimento)
 class DepoimentoAdmin(admin.ModelAdmin):
-    list_display = ['autor', 'cargo']
+    list_display = ['autor', 'cargo', 'ordem']
+    list_editable = ['ordem']
     list_filter = ['cargo']
     search_fields = ['autor', 'cargo']
+    ordering = ['ordem']

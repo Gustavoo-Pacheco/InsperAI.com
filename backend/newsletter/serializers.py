@@ -9,4 +9,5 @@ class ArtigoSerializer(serializers.ModelSerializer):
 class InscricaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inscricao
-        fields = ['email', 'setor']
+        fields = ['id', 'email', 'setor', 'criado_em']
+        read_only_fields = ['id', 'criado_em']

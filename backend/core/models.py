@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 class SiteSettings(models.Model):
-    email = models.CharField(max_length=255, help_text="Public display email")
+    email = models.EmailField(max_length=254, help_text="Public display email")
     contact_recipient_email = models.EmailField(help_text="Where contact form submissions are sent")
     instagram_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
@@ -51,6 +51,10 @@ class Depoimento(models.Model):
     cargo = models.CharField(max_length=255)
     texto = models.TextField()
     foto = models.ImageField(upload_to='depoimentos/', blank=True)
+    ordem = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['ordem']
 
     def __str__(self):
         return self.autor

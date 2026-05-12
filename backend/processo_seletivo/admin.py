@@ -24,14 +24,12 @@ class ProcessoSeletivoAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         processo = ProcessoSeletivo.objects.first()
         if processo:
-            return redirect(f'admin:processo_seletivo_procesoseletivo_change', processo.pk)
+            return redirect('admin:processo_seletivo_processoseletivo_change', processo.pk)
         return super().changelist_view(request, extra_context)
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 
-    class Media:
-        css = {'all': ('admin/css/hide_admin_original.css',)}
 
     def get_readonly_fields(self, request, obj=None):
         if obj and ProcessoSeletivo.objects.count() == 1:

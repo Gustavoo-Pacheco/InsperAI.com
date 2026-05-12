@@ -1,12 +1,12 @@
 from django.db import models
 
-class Artigo(models.Model):
-    SETOR_CHOICES = [
-        ('engenharia', 'Engenharia'),
-        ('direito', 'Direito'),
-        ('financas', 'Finanças'),
-    ]
+SETOR_CHOICES = [
+    ('engenharia', 'Engenharia'),
+    ('direito', 'Direito'),
+    ('financas', 'Finanças'),
+]
 
+class Artigo(models.Model):
     titulo = models.CharField(max_length=255)
     resumo = models.TextField()
     setor = models.CharField(max_length=20, choices=SETOR_CHOICES)
@@ -22,12 +22,6 @@ class Artigo(models.Model):
 
 
 class Inscricao(models.Model):
-    SETOR_CHOICES = [
-        ('engenharia', 'Engenharia'),
-        ('direito', 'Direito'),
-        ('financas', 'Finanças'),
-    ]
-
     email = models.EmailField()
     setor = models.CharField(max_length=20, choices=SETOR_CHOICES)
     criado_em = models.DateTimeField(auto_now_add=True)

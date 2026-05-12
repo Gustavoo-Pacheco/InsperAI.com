@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 
 class Evento(models.Model):
@@ -12,6 +13,10 @@ class Evento(models.Model):
 
     class Meta:
         ordering = ['-data']
+
+    @property
+    def is_passado(self):
+        return self.data < date.today()
 
     def __str__(self):
         return self.titulo

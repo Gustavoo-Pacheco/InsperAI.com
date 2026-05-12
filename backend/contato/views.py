@@ -1,9 +1,12 @@
+import logging
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 from django.core.mail import send_mail
 from django.conf import settings
 from core.models import SiteSettings
+
+logger = logging.getLogger(__name__)
 
 class ContatoView(APIView):
     def post(self, request):
@@ -39,4 +42,5 @@ Mensagem:
 
             return Response({'detail': 'Mensagem enviada com sucesso'}, status=HTTP_200_OK)
         except Exception as e:
+            logger.exception("Failed to send contact email: %s", e)
             return Response({'detail': 'Erro ao enviar mensagem'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
