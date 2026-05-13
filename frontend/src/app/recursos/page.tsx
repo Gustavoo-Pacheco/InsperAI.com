@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { getRecursos } from "@/lib/api";
+import { RecursosHero } from "@/components/recursos/RecursosHero";
+import { ResourceSection } from "@/components/recursos/ResourceSection";
 
 export const metadata: Metadata = {
   title: "Recursos",
@@ -6,16 +9,33 @@ export const metadata: Metadata = {
     "Material próprio e cursos recomendados pela comunidade InsperAI.",
 };
 
-export default function RecursosPage() {
+export default async function RecursosPage() {
+  const [material, cursos] = await Promise.all([
+    getRecursos({ secao: "material" }).catch(() => []),
+    getRecursos({ secao: "cursos" }).catch(() => []),
+  ]);
+
   return (
-    <section
-      className="mx-auto max-w-7xl px-6"
-      style={{
-        paddingTop: "var(--spacing-2xl)",
-        paddingBottom: "var(--spacing-2xl)",
-      }}
-    >
-      {/* TODO: build /recursos sections */}
-    </section>
+    <main style={{ background: "var(--color-background)" }}>
+      <RecursosHero />
+
+      <ResourceSection
+        id="material"
+        eyebrow="MATERIAL PRÓPRIO"
+        heading="Material Próprio"
+        subtext="Papers e posts do Jornal da Insper AI escritos pelos membros."
+        background="background"
+        items={material}
+      />
+
+      <ResourceSection
+        id="cursos"
+        eyebrow="CURSOS RECOMENDADOS"
+        heading="Cursos Recomendados"
+        subtext="Links curados para os melhores cursos externos de IA, do nível iniciante ao avançado."
+        background="surface"
+        items={cursos}
+      />
+    </main>
   );
 }

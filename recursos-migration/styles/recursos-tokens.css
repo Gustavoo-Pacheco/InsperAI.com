@@ -1,0 +1,58 @@
+/* Design tokens e utilitários necessários para a página de Recursos.
+ * Importe este arquivo no globals.css da nova codebase (ou cole o conteúdo
+ * dentro do bloco @theme / regras globais existentes). Requer Tailwind CSS v4. */
+
+@theme {
+  /* Cores da marca */
+  --color-background: #09090B;
+  --color-surface: #18181B;
+  --color-border: #27272A;
+  --color-muted: #A1A1AA;
+  --color-foreground: #FAFAFA;
+  --color-accent: #8B5CF6;
+
+  /* Tipografia */
+  --font-sans: 'Geist Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala de spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* Layout */
+  --navbar-height: 64px;
+}
+
+/* Glow radial decorativo usado no hero da página de Recursos.
+ * Renderizado por <DecorativeGlow />. Aplicar dentro de um pai
+ * com position: relative + overflow: hidden. */
+.decorative-glow {
+  position: absolute;
+  top: 60%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 320px;
+  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.13) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* Glassmorphism — base dos cards de recurso */
+.glass {
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Hover de card — substitui scale por border + box-shadow */
+.card-interactive {
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+.card-interactive:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.1), 0 8px 32px rgba(139, 92, 246, 0.07);
+}
