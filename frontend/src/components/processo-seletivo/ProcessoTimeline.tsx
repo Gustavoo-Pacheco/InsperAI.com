@@ -28,11 +28,13 @@ export default function ProcessoTimeline({ etapas }: ProcessoTimelineProps) {
           Como funciona
         </h2>
         <div className="mt-12 overflow-x-auto">
-          <ol className="relative flex min-w-[720px] items-start px-8">
+          <ol className="relative flex min-w-[720px] items-start">
             <div
               aria-hidden
-              className="absolute left-[12.5%] right-[12.5%] top-5 h-px"
+              className="absolute top-5 h-px"
               style={{
+                left: `${50 / etapas.length}%`,
+                right: `${50 / etapas.length}%`,
                 background:
                   "linear-gradient(90deg, var(--color-accent), var(--color-accent-end))",
               }}

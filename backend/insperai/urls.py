@@ -3,7 +3,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from core.views import SiteSettingsView, FAQViewSet, ParceirosViewSet, DepoimentosViewSet
+from core.views import SiteSettingsView, FAQViewSet
+from sobre.views import DepoimentosViewSet, ParceirosViewSet, SobreView
 from membros.views import MembroViewSet
 from eventos.views import EventoViewSet
 from recursos.views import RecursoViewSet
@@ -12,8 +13,8 @@ from processo_seletivo.views import ProcessoSeletivoView, EtapaViewSet
 
 router = DefaultRouter()
 router.register(r'core/faq', FAQViewSet, basename='faq')
-router.register(r'core/parceiros', ParceirosViewSet, basename='parceiro')
-router.register(r'core/depoimentos', DepoimentosViewSet, basename='depoimento')
+router.register(r'parceiros', ParceirosViewSet, basename='parceiro')
+router.register(r'depoimentos', DepoimentosViewSet, basename='depoimento')
 router.register(r'membros', MembroViewSet, basename='membro')
 router.register(r'eventos', EventoViewSet, basename='evento')
 router.register(r'recursos', RecursoViewSet, basename='recurso')
@@ -30,6 +31,7 @@ urlpatterns = [
         name='edicao-by-week-segment',
     ),
     path('api/core/settings/', SiteSettingsView.as_view()),
+    path('api/sobre/', SobreView.as_view()),
     path('api/processo-seletivo/', ProcessoSeletivoView.as_view()),
     path('api/contato/enviar/', include('contato.urls')),
 ]

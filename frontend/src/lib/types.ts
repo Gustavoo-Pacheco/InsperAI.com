@@ -111,8 +111,9 @@ export interface Faq {
 export interface Parceiro {
   id: number;
   nome: string;
-  logo: string;
+  logo: string | null;
   url: string;
+  descricao: string;
   ordem: number;
 }
 
@@ -122,6 +123,63 @@ export interface Depoimento {
   cargo: string;
   texto: string;
   foto: string;
+}
+
+export interface QuemSomos {
+  headline: string;
+  body: string;
+}
+
+export interface Valor {
+  id: number;
+  titulo: string;
+  descricao: string;
+  ordem: number;
+}
+
+export interface Milestone {
+  id: number;
+  ano: number;
+  titulo: string;
+  descricao: string;
+  foto: string | null;
+  ordem: number;
+}
+
+export type ContentBlockPosicao =
+  | "apos_quem_somos"
+  | "apos_stats"
+  | "apos_eventos"
+  | "apos_valores"
+  | "apos_historia"
+  | "apos_parceiros"
+  | "apos_depoimentos";
+
+export interface ContentBlock {
+  id: number;
+  slug: string;
+  titulo: string;
+  texto: string;
+  ordem: number;
+  posicao: ContentBlockPosicao;
+}
+
+export interface SobreStats {
+  semester: string;
+  membros_ativos: number;
+  eventos_realizados: number;
+  parceiros: number;
+  inscritos_processo_seletivo: number;
+  projetos_entregues: number | null;
+  anos_atuacao: number | null;
+}
+
+export interface SobrePayload {
+  quem_somos: QuemSomos;
+  valores: Valor[];
+  milestones: Milestone[];
+  content_blocks: ContentBlock[];
+  stats: SobreStats;
 }
 
 export interface ContatoBody {

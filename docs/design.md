@@ -61,13 +61,18 @@ All colors are defined as CSS custom properties in `globals.css`:
 - Uppercase, `font-mono`, `--color-accent`, wide letter-spacing (0.10–0.12em)
 - Always appear above the main heading of a section
 
-**Gradient text** (hero headings):
+**Hero headings** are solid `var(--color-foreground)` by default — editorial, high-contrast, and the colored accent stays on the eyebrow and badges.
+
+A page may opt into **gradient text** for the hero h1 when the layout benefits from extra visual energy (e.g. the home page). Use sparingly:
+
 ```css
 background: linear-gradient(135deg, var(--color-accent), var(--color-accent-end));
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 background-clip: text;
 ```
+
+The shared `<GradientText>` component in `components/ui/` wraps this rule.
 
 ---
 
@@ -142,12 +147,10 @@ Each inner page has its own unique hero — they share structural rules (padding
 - Bottom padding: `var(--spacing-2xl)`
 - Always include a `<DecorativeGlow>` positioned behind content (`z-index: 0`)
 - Eyebrow label: mono, accent, uppercase, wide letter-spacing
-- Main heading: gradient text, 48px+, weight 800
+- Main heading: **solid white (`var(--color-foreground)`)**, 48px+, weight 800. The colored accent stays on the eyebrow and badges, keeping the headline editorial and high-contrast.
 - Subtitle: muted color, 16–17px
 
-**Home page**: full-bleed hero with `-mt-[var(--navbar-height)]` so the hero sits behind the transparent navbar.
-
-**Newsletter pages** (`/newsletter`, `/newsletter/<week_id>/<segment>`, `/newsletter/arquivo`): main heading uses **solid white (`var(--color-foreground)`) instead of gradient text**. The colored accent stays on the eyebrow and segment badges, keeping the headline editorial and high-contrast.
+**Home page**: full-bleed hero with `-mt-[var(--navbar-height)]` so the hero sits behind the transparent navbar. The home hero is the one place where the h1 may use `<GradientText>` instead of solid white — use it sparingly and only when the layout calls for extra visual energy.
 
 
 ---
@@ -218,7 +221,7 @@ src/
 | Page | Endpoints |
 |---|---|
 | `/` | `GET /api/core/settings/`, `GET /api/membros/?ativo=true` (first 12), `GET /api/core/parceiros/` |
-| `/sobre` | `GET /api/core/depoimentos/` |
+| `/sobre` | `GET /api/core/sobre/`, `GET /api/core/depoimentos/`, `GET /api/core/parceiros/` |
 | `/membros` | `GET /api/membros/?ativo=true` |
 | `/eventos` | `GET /api/eventos/?destaque=true`, `GET /api/eventos/?passado=true` |
 | `/recursos` | `GET /api/recursos/?secao=material`, `GET /api/recursos/?secao=cursos` |

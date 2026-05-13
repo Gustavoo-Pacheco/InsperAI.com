@@ -59,6 +59,7 @@ List all members. Supports filtering and ordering.
 
 **Query Parameters:**
 - `ativo=true|false` — filter by active status
+- `alumni=true|false` — filter by alumni flag
 - `nivel=presidencia|diretoria|coordenacao|equipe` — filter by level
 - `ordering=nome|ordem|-data` — sort results
 
@@ -79,6 +80,7 @@ List all members. Supports filtering and ordering.
       "linkedin_url": "https://linkedin.com/in/joao",
       "github_url": "https://github.com/joao",
       "ativo": true,
+      "alumni": false,
       "ordem": 0
     }
   ]
@@ -313,7 +315,7 @@ List all FAQ items.
 
 ## Partners / Parceiros
 
-### GET `/api/core/parceiros/`
+### GET `/api/parceiros/`
 
 List all partners/sponsors.
 
@@ -327,17 +329,20 @@ List all partners/sponsors.
       "nome": "Empresa X",
       "logo": "/media/parceiros/logo.png",
       "url": "https://empresax.com",
+      "descricao": "Parceiro institucional desde 2023.",
       "ordem": 0
     }
   ]
 }
 ```
 
+`logo` and `url` may be `null`/empty when not provided. `descricao` is an optional short blurb shown on hover in the partners grid.
+
 ---
 
 ## Testimonials / Depoimentos
 
-### GET `/api/core/depoimentos/`
+### GET `/api/depoimentos/`
 
 List all testimonials.
 
@@ -356,6 +361,64 @@ List all testimonials.
   ]
 }
 ```
+
+---
+
+## About Page / Sobre
+
+### GET `/api/sobre/`
+
+Aggregator endpoint that returns all content for the `/sobre` page in a single request: Quem Somos copy, core values, milestones (with optional photos), free-text content blocks, and organization-wide stats. Counts in `stats` are computed live from existing tables; manual values (semester, applicants, projects, founding year) come from the `SobreContent` singleton (admin-editable). The events carousel is sourced separately from `GET /api/eventos/?passado=true`.
+
+> Backend layout: `SobreContent`, `Valor`, `Milestone`, `ContentBlock`, `Parceiro`, and `Depoimento` all live in the dedicated `sobre` Django app (tables `sobre_*`). Only `SiteSettings` and `FAQ` remain in `core`.
+
+**Response:**
+```json
+{
+  "quem_somos": {
+    "headline": "A comunidade de IA do Insper",
+    "body": "Somos a organização estudantil de inteligência artificial do Insper..."
+  },
+  "valores": [
+    { "id": 1, "titulo": "Curiosidade Intelectual", "descricao": "...", "ordem": 1 }
+  ],
+  "milestones": [
+    {
+      "id": 1,
+      "ano": 2022,
+      "titulo": "Fundação da InsperAI",
+      "descricao": "...",
+      "foto": "/media/milestones/2022.jpg",
+      "ordem": 0
+    }
+  ],
+  "content_blocks": [
+    {
+      "id": 1,
+      "slug": "mensagem-lideranca",
+      "titulo": "Mensagem da liderança",
+      "texto": "...",
+      "ordem": 0,
+      "posicao": "apos_quem_somos"
+    }
+  ],
+  "stats": {
+    "semester": "2026.1",
+    "membros_ativos": 42,
+    "eventos_realizados": 18,
+    "parceiros": 7,
+    "inscritos_processo_seletivo": 320,
+    "projetos_entregues": 12,
+    "anos_atuacao": 4
+  }
+}
+```
+
+`content_blocks[].posicao` enum (active positions): `apos_quem_somos`, `apos_stats`, `apos_parceiros`, `apos_depoimentos`, `apos_eventos`, `apos_valores`, `apos_historia`. Legacy position `apos_missao` remains in the schema for backward compatibility but is not rendered. Only blocks with `ativo=True` are returned.
+
+`milestones[].foto` is `null` when no image has been uploaded.
+
+`stats.projetos_entregues` and `stats.anos_atuacao` may be `null` when the corresponding `SobreContent` fields are unset. `stats.anos_atuacao` is computed live as `current_year − founding_year` (see `backend/core/views.py`); only `founding_year` is stored.
 
 ---
 

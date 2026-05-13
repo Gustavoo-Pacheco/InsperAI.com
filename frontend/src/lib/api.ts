@@ -17,6 +17,7 @@ import type {
   RecursoNivel,
   RecursoSecao,
   SiteSettings,
+  SobrePayload,
 } from "./types";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -85,11 +86,15 @@ export function getFaq(): Promise<Faq[]> {
 }
 
 export function getParceiros(): Promise<Parceiro[]> {
-  return apiFetch<Paginated<Parceiro>>("/api/core/parceiros/").then((r) => r.results);
+  return apiFetch<Paginated<Parceiro>>("/api/parceiros/").then((r) => r.results);
 }
 
 export function getDepoimentos(): Promise<Depoimento[]> {
-  return apiFetch<Paginated<Depoimento>>("/api/core/depoimentos/").then((r) => r.results);
+  return apiFetch<Paginated<Depoimento>>("/api/depoimentos/").then((r) => r.results);
+}
+
+export function getSobreContent(): Promise<SobrePayload> {
+  return apiFetch<SobrePayload>("/api/sobre/");
 }
 
 // --- Membros ---

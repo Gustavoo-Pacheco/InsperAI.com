@@ -1,9 +1,10 @@
 from rest_framework import viewsets
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
-from .models import SiteSettings, FAQ, Parceiro, Depoimento
-from .serializers import SiteSettingsSerializer, FAQSerializer, ParceirosSerializer, DepoimentosSerializer
+from rest_framework.views import APIView
+
+from .models import FAQ, SiteSettings
+from .serializers import FAQSerializer, SiteSettingsSerializer
 
 
 class SiteSettingsView(APIView):
@@ -18,13 +19,3 @@ class SiteSettingsView(APIView):
 class FAQViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = FAQ.objects.all()
     serializer_class = FAQSerializer
-
-
-class ParceirosViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Parceiro.objects.all()
-    serializer_class = ParceirosSerializer
-
-
-class DepoimentosViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Depoimento.objects.all()
-    serializer_class = DepoimentosSerializer
