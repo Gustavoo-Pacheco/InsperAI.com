@@ -6,6 +6,7 @@ class Membro(models.Model):
         ('diretoria', 'Diretoria'),
         ('coordenacao', 'Coordenação'),
         ('equipe', 'Equipe'),
+        ('trainee', 'Trainee'),
     ]
 
     nome = models.CharField(max_length=255)
@@ -16,6 +17,7 @@ class Membro(models.Model):
     linkedin_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
     ativo = models.BooleanField(default=True)
+    alumni = models.BooleanField(default=False)
     ordem = models.PositiveIntegerField(default=0)
 
     class Meta:

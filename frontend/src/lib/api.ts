@@ -96,6 +96,7 @@ export function getDepoimentos(): Promise<Depoimento[]> {
 
 export function getMembros(params?: {
   ativo?: boolean;
+  alumni?: boolean;
   nivel?: MembroNivel;
   ordering?: string;
 }): Promise<Membro[]> {

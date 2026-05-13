@@ -4,9 +4,9 @@ from .models import Membro
 
 @admin.register(Membro)
 class MembroAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'cargo', 'nivel', 'foto_preview', 'ativo', 'ordem']
-    list_editable = ['ativo', 'ordem']
-    list_filter = ['nivel', 'ativo', 'semestre']
+    list_display = ['nome', 'cargo', 'nivel', 'foto_preview', 'ativo', 'alumni', 'ordem']
+    list_editable = ['ativo', 'alumni', 'ordem']
+    list_filter = ['nivel', 'ativo', 'alumni', 'semestre']
     search_fields = ['nome', 'cargo']
     ordering = ['ordem']
 

@@ -14,7 +14,12 @@ export interface SiteSettings {
   endereco: string;
 }
 
-export type MembroNivel = "presidencia" | "diretoria" | "coordenacao" | "equipe";
+export type MembroNivel =
+  | "presidencia"
+  | "diretoria"
+  | "coordenacao"
+  | "equipe"
+  | "trainee";
 
 export interface Membro {
   id: number;
@@ -26,6 +31,7 @@ export interface Membro {
   linkedin_url: string;
   github_url: string;
   ativo: boolean;
+  alumni: boolean;
   ordem: number;
 }
 
