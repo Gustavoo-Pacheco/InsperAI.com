@@ -6,17 +6,21 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname),
   },
   images: {
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
         port: "8000",
         pathname: "/media/**",
+        search: "",
       },
       {
         protocol: "https",
         hostname: "api.insperai.com",
+        port: "",
         pathname: "/media/**",
+        search: "",
       },
     ],
   },

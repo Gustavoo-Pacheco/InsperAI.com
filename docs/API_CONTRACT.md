@@ -109,16 +109,25 @@ List all events. Supports filtering.
     {
       "id": 1,
       "titulo": "Workshop de IA",
+      "subtitulo": "Uma imersão prática em redes neurais",
+      "palestrante": "Ana Costa — Mestranda USP",
       "descricao": "Aprenda os fundamentos...",
       "data": "2026-06-15",
       "imagem": "/media/eventos/workshop.jpg",
       "link": "https://eventbrite.com/...",
       "destaque": true,
-      "passado": false
+      "passado": false,
+      "is_passado": false
     }
   ]
 }
 ```
+
+**Evento fields:**
+- Required: `titulo`, `descricao`, `data`, `imagem`
+- Optional (may be empty string): `subtitulo` (one-liner shown under the hero title), `palestrante` (speaker / org name shown in the metadata line), `link` (registration URL for upcoming events, recording / LinkedIn URL for past events)
+- Booleans: `destaque` (admin toggle for the featured hero card), `passado` (whether to show in the past-events grid)
+- Read-only: `is_passado` (true if `data < today`)
 
 ### GET `/api/eventos/{id}/`
 

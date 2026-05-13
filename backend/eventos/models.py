@@ -3,6 +3,8 @@ from django.db import models
 
 class Evento(models.Model):
     titulo = models.CharField(max_length=255)
+    subtitulo = models.CharField(max_length=255, blank=True, default="")
+    palestrante = models.CharField(max_length=255, blank=True, default="")
     descricao = models.TextField()
     data = models.DateField()
     imagem = models.ImageField(upload_to='eventos/')

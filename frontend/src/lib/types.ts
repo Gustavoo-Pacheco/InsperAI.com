@@ -32,12 +32,15 @@ export interface Membro {
 export interface Evento {
   id: number;
   titulo: string;
+  subtitulo: string;
+  palestrante: string;
   descricao: string;
   data: string;
   imagem: string;
   link: string;
   destaque: boolean;
   passado: boolean;
+  is_passado?: boolean;
 }
 
 export type RecursoSecao = "material" | "cursos";
