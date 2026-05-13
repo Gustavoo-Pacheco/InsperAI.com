@@ -65,11 +65,27 @@ export default async function ContatoPage() {
   return (
     <>
       <ContatoHero />
-      {settings && <QuickLinks settings={settings} />}
-      <ContatoForm />
+      <ContatoSection settings={settings} />
       {settings && <ContatoInfo settings={settings} />}
       <ContatoFaq items={faq} />
     </>
+  );
+}
+
+function ContatoSection({ settings }: { settings: SiteSettings | null }) {
+  return (
+    <section
+      className="mx-auto max-w-7xl px-6"
+      style={{
+        paddingTop: "var(--spacing-lg)",
+        paddingBottom: "var(--spacing-md)",
+      }}
+    >
+      <div className="grid gap-6 md:grid-cols-[420px_1fr] md:items-stretch">
+        {settings && <QuickLinks settings={settings} />}
+        <ContatoForm />
+      </div>
+    </section>
   );
 }
 
@@ -78,8 +94,8 @@ function ContatoHero() {
     <section
       className="relative overflow-hidden"
       style={{
-        paddingTop: "var(--spacing-2xl)",
-        paddingBottom: "var(--spacing-2xl)",
+        paddingTop: "var(--spacing-xl)",
+        paddingBottom: "var(--spacing-lg)",
       }}
     >
       <DecorativeGlow
@@ -92,22 +108,19 @@ function ContatoHero() {
           className="font-mono text-xs uppercase tracking-[0.25em]"
           style={{ color: "var(--color-accent)" }}
         >
-          FALE CONOSCO
+          Contato
         </p>
         <h1
           className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl"
           style={{ letterSpacing: "-0.02em" }}
         >
-          <GradientText as="span">Vamos construir o futuro</GradientText>
-          <br />
-          <span style={{ color: "var(--color-foreground)" }}>juntos</span>
+          <span style={{ color: "#ffffff" }}>Fale com a InsperAI</span>
         </h1>
         <p
           className="mx-auto mt-6 max-w-2xl text-base sm:text-lg"
           style={{ color: "var(--color-muted)" }}
         >
-          Dúvidas, parcerias, mídia ou só quer dar um oi? Escolha o canal que
-          preferir — respondemos rápido.
+          Entre em contato para nos conhecer melhor e agendar eventos ou visitas.
         </p>
       </div>
     </section>
@@ -152,69 +165,66 @@ function QuickLinks({ settings }: { settings: SiteSettings }) {
   if (links.length === 0) return null;
 
   return (
-    <section
-      className="mx-auto max-w-7xl px-6"
-      style={{
-        paddingTop: "var(--spacing-xl)",
-        paddingBottom: "var(--spacing-xl)",
-      }}
-    >
-      <div className="grid gap-4 md:grid-cols-3">
-        {links.map(({ href, icon: Icon, label, value, external, aria }) => (
-          <a
-            key={label}
-            href={href}
-            aria-label={aria}
-            {...(external
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-            className="group block"
-          >
-            <GlassCard className="h-full">
-              <div
-                className="inline-flex h-10 w-10 items-center justify-center rounded-lg"
-                style={{ background: "var(--color-accent-light)" }}
-              >
-                <Icon
-                  size={20}
-                  aria-hidden
-                  style={{ color: "var(--color-accent)" }}
-                />
-              </div>
+    <div className="flex h-full flex-col gap-4">
+      {links.map(({ href, icon: Icon, label, value, external, aria }) => (
+        <a
+          key={label}
+          href={href}
+          aria-label={aria}
+          {...(external
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+          className="group flex flex-1"
+        >
+          <GlassCard className="flex w-full items-center gap-4 !p-5">
+            <div
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg"
+              style={{ background: "var(--color-accent-light)" }}
+            >
+              <Icon
+                size={20}
+                aria-hidden
+                style={{ color: "var(--color-accent)" }}
+              />
+            </div>
+            <div className="min-w-0 flex-1">
               <p
-                className="mt-4 font-mono text-xs uppercase tracking-[0.2em]"
+                className="font-mono text-[10px] uppercase tracking-[0.2em]"
                 style={{ color: "var(--color-muted)" }}
               >
                 {label}
               </p>
               <p
-                className="mt-2 text-base font-medium break-words"
+                className="mt-0.5 truncate text-sm font-medium"
                 style={{ color: "var(--color-foreground)" }}
               >
                 {value}
               </p>
-            </GlassCard>
-          </a>
-        ))}
-      </div>
-    </section>
+            </div>
+          </GlassCard>
+        </a>
+      ))}
+    </div>
   );
 }
 
 function ContatoInfo({ settings }: { settings: SiteSettings }) {
   const hasEndereco = Boolean(settings.endereco);
-  const hasMap = Boolean(settings.google_maps_embed_url);
+  const mapEmbedUrl = hasEndereco
+    ? `https://www.google.com/maps?q=${encodeURIComponent(settings.endereco)}&output=embed`
+    : "";
+  const hasMap = Boolean(mapEmbedUrl);
   if (!hasEndereco && !hasMap) return null;
 
   return (
     <section
       className="mx-auto max-w-7xl px-6"
       style={{
-        paddingTop: "var(--spacing-2xl)",
+        paddingTop: "var(--spacing-md)",
         paddingBottom: "var(--spacing-2xl)",
       }}
     >
-      <div className="mb-[var(--spacing-lg)] text-center">
+      <div className="mb-[var(--spacing-md)] text-center">
         <p
           className="font-mono text-xs uppercase tracking-[0.2em]"
           style={{ color: "var(--color-accent)" }}
@@ -229,37 +239,39 @@ function ContatoInfo({ settings }: { settings: SiteSettings }) {
         </h2>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="flex flex-col gap-3">
         {hasEndereco && (
-          <GlassCard className="flex flex-col justify-center">
+          <GlassCard className="flex items-center gap-4 !py-3 !px-5">
             <div
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
               style={{ background: "var(--color-accent-light)" }}
             >
               <MapPin
-                size={20}
+                size={18}
                 aria-hidden
                 style={{ color: "var(--color-accent)" }}
               />
             </div>
-            <p
-              className="mt-4 font-mono text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--color-muted)" }}
-            >
-              Endereço
-            </p>
-            <p
-              className="mt-2 whitespace-pre-line text-base leading-relaxed"
-              style={{ color: "var(--color-foreground)" }}
-            >
-              {settings.endereco}
-            </p>
+            <div className="min-w-0 flex-1">
+              <p
+                className="font-mono text-[10px] uppercase tracking-[0.2em]"
+                style={{ color: "var(--color-muted)" }}
+              >
+                Endereço
+              </p>
+              <p
+                className="mt-0.5 whitespace-pre-line text-sm leading-snug"
+                style={{ color: "var(--color-foreground)" }}
+              >
+                {settings.endereco}
+              </p>
+            </div>
           </GlassCard>
         )}
         {hasMap && (
           <GlassCard className="!p-0 overflow-hidden">
             <iframe
-              src={settings.google_maps_embed_url}
+              src={mapEmbedUrl}
               title="Mapa do Insper"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

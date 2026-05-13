@@ -10,8 +10,8 @@ export interface SiteSettings {
   contact_recipient_email: string;
   instagram_url: string;
   linkedin_url: string;
+  github_url: string;
   endereco: string;
-  google_maps_embed_url: string;
 }
 
 export type MembroNivel = "presidencia" | "diretoria" | "coordenacao" | "equipe";
@@ -57,14 +57,34 @@ export interface Recurso {
 
 export type ArtigoSetor = "engenharia" | "direito" | "financas";
 
+export interface Edicao {
+  id: number;
+  week_id: string;
+  segment: ArtigoSetor;
+  date: string;
+  title: string;
+  description: string;
+  story_count: number;
+  url: string;
+}
+
 export interface Artigo {
   id: number;
   titulo: string;
   resumo: string;
-  setor: ArtigoSetor;
-  edicao: string;
+  link: string;
+  fonte: string;
+  importancia: number;
+  por_que_importa: string;
+  tema: string;
+  empresas: string[];
+  explicacao_jargao: string;
   destaque: boolean;
-  publicado_em: string;
+  ordem: number;
+}
+
+export interface EdicaoDetail extends Edicao {
+  artigos: Artigo[];
 }
 
 export interface InscricaoNewsletter {
@@ -112,10 +132,20 @@ export interface Etapa {
   ativa: boolean;
 }
 
+export interface Criterio {
+  id: number;
+  titulo: string;
+  descricao: string;
+  icon: string;
+  ordem: number;
+  ativa: boolean;
+}
+
 export interface ProcessoSeletivo {
   status: ProcessoStatus;
   proxima_edicao: string;
   url_inscricao: string;
   texto_cta: string;
   etapas: Etapa[];
+  criterios: Criterio[];
 }

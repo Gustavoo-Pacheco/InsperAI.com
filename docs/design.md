@@ -138,7 +138,7 @@ Absolutely positioned div behind hero sections:
 Each inner page has its own unique hero — they share structural rules (padding, typography scale, DecorativeGlow) but must feel distinct from each other in layout, supporting elements, and mood.
 
 **Shared rules across all inner-page heroes:**
-- Top padding: `calc(var(--navbar-height) + var(--spacing-2xl))`
+- Top padding: `var(--spacing-xl)` (the root `<main>` already offsets by `var(--navbar-height)`, so the hero only needs the extra breathing room above the eyebrow)
 - Bottom padding: `var(--spacing-2xl)`
 - Always include a `<DecorativeGlow>` positioned behind content (`z-index: 0`)
 - Eyebrow label: mono, accent, uppercase, wide letter-spacing
@@ -146,6 +146,8 @@ Each inner page has its own unique hero — they share structural rules (padding
 - Subtitle: muted color, 16–17px
 
 **Home page**: full-bleed hero with `-mt-[var(--navbar-height)]` so the hero sits behind the transparent navbar.
+
+**Newsletter pages** (`/newsletter`, `/newsletter/<week_id>/<segment>`, `/newsletter/arquivo`): main heading uses **solid white (`var(--color-foreground)`) instead of gradient text**. The colored accent stays on the eyebrow and segment badges, keeping the headline editorial and high-contrast.
 
 
 ---

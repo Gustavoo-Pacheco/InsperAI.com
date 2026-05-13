@@ -1,8 +1,9 @@
 import type {
-  Artigo,
   ArtigoSetor,
   ContatoBody,
   Depoimento,
+  Edicao,
+  EdicaoDetail,
   Etapa,
   Evento,
   Faq,
@@ -41,6 +42,17 @@ export function mediaUrl(path: string): string {
   return `${API_URL}${normalized.startsWith("/media/") ? normalized : `/media/${path}`}`;
 }
 
+export class ApiError extends Error {
+  status: number;
+  body: unknown;
+  constructor(status: number, body: unknown, message: string) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
@@ -50,7 +62,13 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
     },
   });
   if (!res.ok) {
-    throw new Error(`API ${res.status} ${res.statusText} — ${path}`);
+    let body: unknown = null;
+    try {
+      body = await res.json();
+    } catch {
+      // not JSON
+    }
+    throw new ApiError(res.status, body, `API ${res.status} ${res.statusText} — ${path}`);
   }
   if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
@@ -110,13 +128,27 @@ export function getRecursos(params?: {
 
 // --- Newsletter ---
 
-export function getArtigos(params?: {
-  setor?: ArtigoSetor;
-  destaque?: boolean;
-}): Promise<Artigo[]> {
-  return apiFetch<Paginated<Artigo>>(
-    `/api/newsletter/artigos/${buildQuery(params)}`,
-  ).then((r) => r.results);
+export function getLatestEdicoesBySegment(): Promise<Edicao[]> {
+  return apiFetch<Edicao[]>("/api/newsletter/edicoes/latest-by-segment/");
+}
+
+export function getEdicoes(params?: {
+  segment?: ArtigoSetor;
+  page?: number;
+}): Promise<Paginated<Edicao>> {
+  return apiFetch<Paginated<Edicao>>(`/api/newsletter/edicoes/${buildQuery(params)}`);
+}
+
+export function getEdicaoDetail(
+  weekId: string,
+  segment: ArtigoSetor | string,
+): Promise<EdicaoDetail | null> {
+  return apiFetch<EdicaoDetail>(
+    `/api/newsletter/edicoes/${encodeURIComponent(weekId)}/${encodeURIComponent(segment)}/`,
+  ).catch((err) => {
+    if (err instanceof ApiError && err.status === 404) return null;
+    throw err;
+  });
 }
 
 export function subscribeNewsletter(

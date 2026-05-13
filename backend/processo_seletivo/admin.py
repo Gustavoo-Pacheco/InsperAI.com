@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path
-from .models import ProcessoSeletivo, EtapaProcessoSeletivo
+from .models import ProcessoSeletivo, EtapaProcessoSeletivo, CriterioProcessoSeletivo
 
 class EtapaInline(admin.TabularInline):
     model = EtapaProcessoSeletivo
@@ -9,11 +9,17 @@ class EtapaInline(admin.TabularInline):
     extra = 1
     ordering = ['ordem']
 
+class CriterioInline(admin.TabularInline):
+    model = CriterioProcessoSeletivo
+    fields = ['titulo', 'descricao', 'icon', 'ordem', 'ativa']
+    extra = 1
+    ordering = ['ordem']
+
 @admin.register(ProcessoSeletivo)
 class ProcessoSeletivoAdmin(admin.ModelAdmin):
     list_display = ['proxima_edicao', 'status']
     fields = ['proxima_edicao', 'status', 'url_inscricao', 'texto_cta']
-    inlines = [EtapaInline]
+    inlines = [EtapaInline, CriterioInline]
 
     def has_add_permission(self, request):
         return not ProcessoSeletivo.objects.exists()

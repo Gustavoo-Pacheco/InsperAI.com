@@ -37,3 +37,20 @@ class EtapaProcessoSeletivo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+class CriterioProcessoSeletivo(models.Model):
+    processo_seletivo = models.ForeignKey(ProcessoSeletivo, on_delete=models.CASCADE, related_name='criterios')
+    titulo = models.CharField(max_length=255)
+    descricao = models.TextField()
+    icon = models.CharField(max_length=64, help_text="lucide-react icon name, e.g. Lightbulb")
+    ordem = models.PositiveIntegerField(default=0)
+    ativa = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['ordem']
+        verbose_name = "Critério"
+        verbose_name_plural = "Critérios"
+
+    def __str__(self):
+        return self.titulo

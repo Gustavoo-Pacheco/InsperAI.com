@@ -6,8 +6,8 @@ class SiteSettings(models.Model):
     contact_recipient_email = models.EmailField(help_text="Where contact form submissions are sent")
     instagram_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
+    github_url = models.URLField(blank=True)
     endereco = models.TextField(blank=True)
-    google_maps_embed_url = models.URLField(blank=True)
 
     class Meta:
         verbose_name_plural = "Site Settings"

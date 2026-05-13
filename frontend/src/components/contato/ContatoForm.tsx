@@ -14,7 +14,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMPTY: ContatoBody = { nome: "", email: "", assunto: "", mensagem: "" };
 
 const fieldClass = cn(
-  "w-full rounded-lg border bg-transparent px-4 py-3",
+  "w-full rounded-lg border bg-transparent px-3 py-2",
   "text-foreground placeholder:text-muted",
   "transition-colors duration-200",
   "focus:outline-none focus:border-transparent",
@@ -69,35 +69,10 @@ export default function ContatoForm() {
   const sending = status === "sending";
 
   return (
-    <section
-      className="mx-auto max-w-3xl px-6"
-      style={{
-        paddingTop: "var(--spacing-2xl)",
-        paddingBottom: "var(--spacing-2xl)",
-      }}
-    >
-      <div
-        className="mb-[var(--spacing-lg)] text-center"
-        style={{ marginBottom: "var(--spacing-lg)" }}
-      >
-        <p
-          className="font-mono text-xs uppercase tracking-[0.2em]"
-          style={{ color: "var(--color-accent)" }}
-        >
-          ENVIE UMA MENSAGEM
-        </p>
-        <h2
-          className="mt-3 text-3xl font-bold sm:text-4xl"
-          style={{ color: "var(--color-foreground)" }}
-        >
-          Vamos conversar
-        </h2>
-      </div>
-
-      <GlassCard as="section" className="p-8 sm:p-10">
-        <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div className="grid gap-5 md:grid-cols-2">
-            <label className="flex flex-col gap-2">
+    <GlassCard as="section" className="flex h-full flex-col p-5 sm:p-6">
+        <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <div className="grid gap-3 md:grid-cols-2">
+            <label className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-foreground">Nome</span>
               <input
                 type="text"
@@ -112,7 +87,7 @@ export default function ContatoForm() {
                 placeholder="Seu nome completo"
               />
             </label>
-            <label className="flex flex-col gap-2">
+            <label className="flex flex-col gap-1.5">
               <span className="text-sm font-medium text-foreground">E-mail</span>
               <input
                 type="email"
@@ -129,7 +104,7 @@ export default function ContatoForm() {
             </label>
           </div>
 
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-foreground">Assunto</span>
             <input
               type="text"
@@ -144,11 +119,11 @@ export default function ContatoForm() {
             />
           </label>
 
-          <label className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-foreground">Mensagem</span>
             <textarea
               name="mensagem"
-              rows={6}
+              rows={3}
               required
               disabled={sending}
               value={values.mensagem}
@@ -167,7 +142,7 @@ export default function ContatoForm() {
               type="submit"
               disabled={sending}
               className={cn(
-                "glass inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3",
+                "glass inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2",
                 "text-sm font-semibold text-foreground",
                 "transition-all duration-200",
                 "hover:scale-[1.005] disabled:cursor-not-allowed disabled:opacity-60",
@@ -206,7 +181,6 @@ export default function ContatoForm() {
             </p>
           )}
         </form>
-      </GlassCard>
-    </section>
+    </GlassCard>
   );
 }

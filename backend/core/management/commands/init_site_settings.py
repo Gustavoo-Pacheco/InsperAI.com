@@ -14,6 +14,7 @@ class Command(BaseCommand):
             contact_recipient_email='admin@insperai.com.br',
             instagram_url='https://instagram.com/insperai',
             linkedin_url='https://linkedin.com/company/insperai',
+            github_url='https://github.com/insperai',
             endereco='São Paulo, SP'
         )
         self.stdout.write(self.style.SUCCESS(f'Successfully created SiteSettings'))

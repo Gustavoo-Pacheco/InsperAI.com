@@ -4,7 +4,7 @@ from .models import SiteSettings, FAQ, Parceiro, Depoimento
 class SiteSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteSettings
-        fields = ['email', 'contact_recipient_email', 'instagram_url', 'linkedin_url', 'endereco', 'google_maps_embed_url']
+        fields = ['email', 'contact_recipient_email', 'instagram_url', 'linkedin_url', 'github_url', 'endereco']
 
 class FAQSerializer(serializers.ModelSerializer):
     class Meta:

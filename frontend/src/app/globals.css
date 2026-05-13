@@ -66,3 +66,7 @@ body {
   background: var(--color-accent-medium);
   color: var(--color-foreground);
 }
+
+.transition-default {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}

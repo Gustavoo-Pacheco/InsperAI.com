@@ -44,8 +44,8 @@ Returns singleton site configuration.
   "contact_recipient_email": "admin@insperai.com.br",
   "instagram_url": "https://instagram.com/insperai",
   "linkedin_url": "https://linkedin.com/company/insperai",
-  "endereco": "Rua ..., São Paulo, SP",
-  "google_maps_embed_url": "https://maps.google.com/..."
+  "github_url": "https://github.com/insperai",
+  "endereco": "Rua ..., São Paulo, SP"
 }
 ```
 
@@ -164,35 +164,96 @@ Get a single resource.
 
 ## Newsletter
 
-### GET `/api/newsletter/artigos/`
+Each `(week_id, segment)` pair is its own edition. Admins create an `Edicao` and add
+`Artigo` rows inline. The public newsletter page shows the latest edition of each
+segment (engenharia, direito, financas). Clicking a card opens
+`/newsletter/<week_id>/<segment>` which renders all articles of that edition.
 
-List all newsletter articles. Supports filtering.
+### GET `/api/newsletter/edicoes/`
+
+Paginated list of editions, ordered by `-date`. Optional `?segment=` filter.
 
 **Query Parameters:**
-- `setor=engenharia|direito|financas` — filter by sector
-- `destaque=true|false` — show featured articles only
+- `segment=engenharia|direito|financas` — filter by segment
+- `page=<n>` — pagination
 
 **Response:**
 ```json
 {
-  "count": 8,
+  "count": 4,
+  "next": null,
+  "previous": null,
   "results": [
     {
       "id": 1,
-      "titulo": "Regulação de IA no Brasil",
-      "resumo": "Entenda os novos marcos regulatórios...",
-      "setor": "direito",
-      "edicao": "Ed. 3",
-      "destaque": true,
-      "publicado_em": "2026-03-01"
+      "week_id": "2026-W18",
+      "segment": "engenharia",
+      "date": "2026-05-06",
+      "title": "Engenharia & IA",
+      "description": "Avanços técnicos, novos modelos...",
+      "story_count": 3,
+      "url": "/newsletter/2026-W18/engenharia"
     }
   ]
 }
 ```
 
-### GET `/api/newsletter/artigos/{id}/`
+### GET `/api/newsletter/edicoes/latest-by-segment/`
 
-Get a single article.
+Returns the most recent edition of each segment (up to 3 items, one per segment that
+has at least one edition).
+
+**Response:**
+```json
+[
+  { "id": 1, "week_id": "2026-W18", "segment": "engenharia", "date": "2026-05-06",
+    "title": "Engenharia & IA", "description": "...", "story_count": 3,
+    "url": "/newsletter/2026-W18/engenharia" },
+  { "id": 2, "week_id": "2026-W18", "segment": "direito", "date": "2026-05-06",
+    "title": "Direito & Regulação", "description": "...", "story_count": 3,
+    "url": "/newsletter/2026-W18/direito" }
+]
+```
+
+### GET `/api/newsletter/edicoes/<week_id>/<segment>/`
+
+Detail endpoint with all articles nested. Returns `404` if no edition matches.
+
+**Response:**
+```json
+{
+  "id": 2,
+  "week_id": "2026-W18",
+  "segment": "direito",
+  "date": "2026-05-06",
+  "title": "Direito & Regulação",
+  "description": "Legal tech, regulação de IA e impacto jurídico...",
+  "story_count": 3,
+  "url": "/newsletter/2026-W18/direito",
+  "artigos": [
+    {
+      "id": 4,
+      "titulo": "Freshfields adota Claude da Anthropic em toda a organização",
+      "resumo": "O escritório global Freshfields fechou contrato corporativo...",
+      "link": "https://lightjur.com/freshfields-anthropic",
+      "fonte": "LightJur",
+      "importancia": 9,
+      "por_que_importa": "Sinaliza a normalização do uso corporativo de IA...",
+      "tema": "Adoção corporativa de IA",
+      "empresas": ["Anthropic", "Freshfields"],
+      "explicacao_jargao": "agentes de IA — sistemas capazes de executar tarefas em várias etapas.",
+      "destaque": true,
+      "ordem": 1
+    }
+  ]
+}
+```
+
+**Artigo fields:**
+- Required: `titulo`, `resumo`, `link`, `fonte`, `importancia` (1–10)
+- Optional: `por_que_importa`, `tema`, `empresas[]`, `explicacao_jargao` (may be empty string / `[]`)
+- `destaque` (boolean) marks the featured story of the edition
+- `ordem` controls manual ordering within the edition
 
 ### POST `/api/newsletter/inscricoes/`
 
@@ -209,8 +270,10 @@ Subscribe to newsletter.
 **Response:** `201 Created`
 ```json
 {
+  "id": 1,
   "email": "user@example.com",
-  "setor": "engenharia"
+  "setor": "engenharia",
+  "criado_em": "2026-04-01T12:00:00Z"
 }
 ```
 
@@ -344,9 +407,21 @@ Get selection process singleton config + embedded timeline stages.
       "ordem": 1,
       "ativa": true
     }
+  ],
+  "criterios": [
+    {
+      "id": 1,
+      "titulo": "Curiosidade Intelectual",
+      "descricao": "Interesse genuíno em IA e vontade de aprender continuamente.",
+      "icon": "Lightbulb",
+      "ordem": 0,
+      "ativa": true
+    }
   ]
 }
 ```
+
+`criterios[].icon` is a free-form string referencing a `lucide-react` icon name (e.g. `Lightbulb`, `Code2`, `Users`, `Sparkles`, `Target`, `BookOpen`). The frontend whitelists known names and falls back to `Lightbulb` for unknown values.
 
 ### GET `/api/processo-seletivo/etapas/`
 

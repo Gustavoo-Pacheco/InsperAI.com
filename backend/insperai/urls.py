@@ -7,7 +7,7 @@ from core.views import SiteSettingsView, FAQViewSet, ParceirosViewSet, Depoiment
 from membros.views import MembroViewSet
 from eventos.views import EventoViewSet
 from recursos.views import RecursoViewSet
-from newsletter.views import ArtigoViewSet, InscricaoViewSet
+from newsletter.views import EdicaoDetailByWeekSegmentView, EdicaoViewSet, InscricaoViewSet
 from processo_seletivo.views import ProcessoSeletivoView, EtapaViewSet
 
 router = DefaultRouter()
@@ -17,13 +17,18 @@ router.register(r'core/depoimentos', DepoimentosViewSet, basename='depoimento')
 router.register(r'membros', MembroViewSet, basename='membro')
 router.register(r'eventos', EventoViewSet, basename='evento')
 router.register(r'recursos', RecursoViewSet, basename='recurso')
-router.register(r'newsletter/artigos', ArtigoViewSet, basename='artigo')
+router.register(r'newsletter/edicoes', EdicaoViewSet, basename='edicao')
 router.register(r'newsletter/inscricoes', InscricaoViewSet, basename='inscricao')
 router.register(r'processo-seletivo/etapas', EtapaViewSet, basename='etapa')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path(
+        'api/newsletter/edicoes/<str:week_id>/<str:segment>/',
+        EdicaoDetailByWeekSegmentView.as_view(),
+        name='edicao-by-week-segment',
+    ),
     path('api/core/settings/', SiteSettingsView.as_view()),
     path('api/processo-seletivo/', ProcessoSeletivoView.as_view()),
     path('api/contato/enviar/', include('contato.urls')),

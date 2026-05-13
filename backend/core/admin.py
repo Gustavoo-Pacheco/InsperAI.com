@@ -7,7 +7,7 @@ admin.site.site_header = "InsperAI Admin"
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['email', 'contact_recipient_email']
-    fields = ['email', 'contact_recipient_email', 'instagram_url', 'linkedin_url', 'endereco', 'google_maps_embed_url']
+    fields = ['email', 'contact_recipient_email', 'instagram_url', 'linkedin_url', 'github_url', 'endereco']
 
     def has_add_permission(self, request):
         return not SiteSettings.objects.exists()

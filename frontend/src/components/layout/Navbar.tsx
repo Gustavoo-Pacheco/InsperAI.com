@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -27,19 +28,29 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[background,border,backdrop-filter] duration-200",
+        "fixed inset-x-0 top-0 z-50 transition-[background,border] duration-200",
         scrolled
-          ? "glass border-b border-[var(--color-border)]"
-          : "border-b border-transparent bg-transparent",
+          ? "border-b border-[var(--color-border)]"
+          : "border-b border-transparent",
       )}
-      style={{ height: "var(--navbar-height)" }}
+      style={{
+        height: "var(--navbar-height)",
+        background: scrolled ? "var(--color-background)" : "transparent",
+      }}
     >
       <nav className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
-        <Link
-          href="/"
-          className="font-mono text-sm font-medium uppercase tracking-[0.15em] text-foreground"
-        >
-          Insper<span style={{ color: "var(--color-accent)" }}>AI</span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image
+            src="/logo-degrade.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="h-8 w-auto"
+          />
+          <span className="font-mono text-sm font-medium uppercase tracking-[0.15em] text-foreground">
+            Insper<span style={{ color: "var(--color-accent)" }}>AI</span>
+          </span>
         </Link>
         <ul className="hidden items-center gap-7 md:flex">
           {NAV_LINKS.map((link) => (
